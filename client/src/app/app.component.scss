@@ -1,0 +1,23 @@
+.nav-item {
+    &:hover:not(.active) {
+        color: black !important;
+        background: linear-gradient(180deg, purple 0%, violet 40%, violet 60%, purple 100%);
+    }
+}
+
+.nav-item.active {
+    .nav-link {
+        color: purple;
+    }
+
+    background: linear-gradient(180deg, purple 0%, magenta 40%, magenta 60%, purple 100%);
+}
+
+.navbar {
+    height: 7vh;
+}
+
+.nav-link {
+    height: 100%;
+    color: whitesmoke;
+}

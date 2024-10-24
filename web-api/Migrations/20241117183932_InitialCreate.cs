@@ -12,6 +12,18 @@ namespace web_api.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "CarImages",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CarOfferId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CarImages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -39,7 +51,7 @@ namespace web_api.Migrations
                     Odometer = table.Column<string>(type: "text", nullable: false),
                     OdometerInMiles = table.Column<bool>(type: "boolean", nullable: false),
                     IsAutomatic = table.Column<bool>(type: "boolean", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     OwnerId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
@@ -53,29 +65,6 @@ namespace web_api.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateTable(
-                name: "CarImages",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Base64ImageData = table.Column<string>(type: "character varying(6400000)", maxLength: 6400000, nullable: false),
-                    CarOfferId = table.Column<Guid>(type: "uuid", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CarImages", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CarImages_CarOffers_CarOfferId",
-                        column: x => x.CarOfferId,
-                        principalTable: "CarOffers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CarImages_CarOfferId",
-                table: "CarImages",
-                column: "CarOfferId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CarOffers_OwnerId",

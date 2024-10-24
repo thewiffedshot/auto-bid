@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using WebApi.DataContext.Models; 
-using AutoBid.WebApi.DataContext;
+using WebApi.Data.Models; 
+using AutoBid.WebApi.Data;
 using WebApi.Interfaces.Models;
-using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Interfaces.Mappers;
 
 namespace WebApi.Controllers
 {
@@ -12,10 +12,12 @@ namespace WebApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly AutoBidDbContext _context;
+        private readonly IMapper<UserModel, User> _userMapper;
 
-        public UserController(AutoBidDbContext context)
+        public UserController(AutoBidDbContext context, IMapper<UserModel, User> userMapper)
         {
             _context = context;
+            _userMapper = userMapper;
         }
 
         [HttpPost]
@@ -41,7 +43,7 @@ namespace WebApi.Controllers
                 return BadRequest("User already exists.");
             }
 
-            var userEntity = user.ToEntity();
+            var userEntity = _userMapper.Map(user);
             _context.Users.Add(userEntity);
 
             await _context.SaveChangesAsync();
@@ -69,7 +71,7 @@ namespace WebApi.Controllers
                 return NotFound("User not found.");
             }
 
-            _context.Users.Update(user.ToEntity(id));
+            _userMapper.Map(user, existingUser);
             await _context.SaveChangesAsync();
 
             return Ok("User updated.");
@@ -122,7 +124,7 @@ namespace WebApi.Controllers
                 return NotFound("User not found.");
             }
 
-            return Ok(existingUser);
+            return Ok("User exists.");
         }
     }
 }

@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations;
-using WebApi.DataContext.Models;
+using TypeGen.Core.TypeAnnotations;
+using WebApi.Data.Models;
 
 namespace WebApi.Interfaces.Models
 {
+    [ExportTsClass]
     public class UserModel : IEntityModel<User>
     {
         [Required]

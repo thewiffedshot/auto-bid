@@ -1,14 +1,14 @@
 using Microsoft.EntityFrameworkCore;
-using WebApi.DataContext.Models;
+using WebApi.Data.Models;
 
-namespace AutoBid.WebApi.DataContext
+namespace AutoBid.WebApi.Data
 {
-    public class AutoBidDbContext : DbContext
+    public class AutoBidDbContext : DbContext       
     {
         public DbSet<CarOffer> CarOffers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<CarImage> CarImages { get; set; }
-
+        
         public AutoBidDbContext(DbContextOptions<AutoBidDbContext> options)
             : base(options)
         {

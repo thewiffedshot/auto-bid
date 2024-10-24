@@ -1,7 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using AutoBid.WebApi.DataContext;
-using WebApi.DataContext.Models;
 using WebApi.Interfaces.Models;
 
 namespace AutoBid.WebApi.Controllers
@@ -10,106 +7,55 @@ namespace AutoBid.WebApi.Controllers
     [ApiController]
     public class CarOfferController : ControllerBase
     {
-        private readonly AutoBidDbContext _context;
+        private readonly AutoBidContext _context;
 
-        public CarOfferController(AutoBidDbContext context)
+        public CarOfferController(AutoBidContext context) 
         {
             _context = context;
         }
 
-        // POST: api/CarOffer
         [HttpPost]
-        public async Task<ActionResult<CarOffer>> CreateCarOffer(CarOfferModel carOffer)
+        public async Task<ActionResult<Guid>> Create([FromBody] CarOfferModel carOffer)
         {
             if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
 
-            var user = await _context.Users.SingleOrDefaultAsync(e => e.Username == carOffer.Owner.Username);
-
-            if (user == null)
-            {
-                return BadRequest("Offer's owner not found.");
+            if (carOffer.CarImagesToAdd == null || carOffer.CarImagesToAdd.Count == 0) {
+                return BadRequest("At least one image is required.");
             }
 
-            var carOfferEntity = carOffer.ToEntity();
-            _context.CarOffers.Add(carOfferEntity);
+            var id = await _context.CarOffers.Create(carOffer, carOffer.CarImagesToAdd);
 
-            await _context.SaveChangesAsync();
-
-            return Created("Car offer created.", carOfferEntity.Id);
+            return Created("Car offer created.", id);
         }
 
-        // PUT: api/CarOffer/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCarOffer(Guid id, CarOfferModel carOffer)
+        public async Task<IActionResult> Update(Guid id, [FromBody] CarOfferModel carOffer) 
         {
             if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
 
-            var existingCarOffer = await _context.CarOffers.FindAsync(id);
-
-            if (existingCarOffer == null)
-            {
-                return NotFound("Car offer not found.");
-            }
-
-            _context.CarOffers.Update(carOffer.ToEntity(id));
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CarOfferExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _context.CarOffers.Update(id, carOffer, carOffer.CarImagesToAdd, carOffer.CarImagesToDelete);
 
             return Ok("Car offer updated.");
         }
 
-        // DELETE: api/CarOffer/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCarOffer(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            var carOffer = await _context.CarOffers.FindAsync(id);
-
-            if (carOffer == null)
-            {
-                return NotFound("Car offer not found.");
-            }
-
-            _context.CarOffers.Remove(carOffer);
-            await _context.SaveChangesAsync();
+            await _context.CarOffers.Delete(id);
 
             return Ok("Car offer deleted.");
         }
 
-        private bool CarOfferExists(Guid id)
-        {
-            return _context.CarOffers.Any(e => e.Id == id);
-        }
-
-        // GET: api/CarOffer/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<CarOffer>> GetCarOffer(Guid id)
+        public async Task<ActionResult<CarOfferModel>> Get(Guid id)
         {
-            var carOffer = await _context.CarOffers.FindAsync(id);
+            var carOffer = await _context.CarOffers.Get(id);
 
-            if (carOffer == null)
-            {
-                return NotFound("Car offer not found.");
-            }
-
-            return Ok(carOffer.ToModel());
+            return Ok(carOffer);
         }
     }
 }

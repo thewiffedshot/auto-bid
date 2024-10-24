@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using WebApi.Interfaces;
 using WebApi.Interfaces.Models;
 
-namespace WebApi.DataContext.Models
+namespace WebApi.Data.Models
 {
     public class User : IEntity<UserModel>
     {
@@ -10,18 +10,18 @@ namespace WebApi.DataContext.Models
         public Guid? Id { get; set; }
 
         [MaxLength(100)]
-        public required string FirstName { get; set; }
+        public string FirstName { get; set; } = default!;
 
         [MaxLength(100)]
         public string? LastName { get; set; }
 
         [Required]
         [EmailAddress]
-        public required string Email { get; set; }
+        public string Email { get; set; } = default!;
 
         [Required]
         [MaxLength(100)]
-        public required string Username { get; set; }
+        public string Username { get; set; } = default!;
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

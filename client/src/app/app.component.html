@@ -1,0 +1,36 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark py-0">
+  <a class="navbar-brand px-5" href="#">AutoBid</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse h-100" id="navbarNav">
+    <ul class="navbar-nav h-100">
+      <li class="nav-item" [ngClass]="activeNavElement === 'home' ? 'active' : ''"
+        (click)="activeNavElement = 'home'">
+        <div class="nav-link d-flex align-items-center">Home</div>
+      </li>
+      <li class="nav-item" [ngClass]="activeNavElement === 'users' ? 'active' : ''"
+        (click)="activeNavElement = 'users'">
+        <div class="nav-link d-flex align-items-center">Users</div>
+      </li>
+      <li class="nav-item" [ngClass]="activeNavElement === 'offers' ? 'active' : ''"
+      (click)="activeNavElement = 'offers'">
+        <div class="nav-link d-flex align-items-center">Offers</div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+@switch (activeNavElement) {
+  @case ('home') {
+    <app-home></app-home>
+  }
+  @case ('users') {
+    <app-users-dashboard></app-users-dashboard>
+  }
+  @case ('offers') {
+    <app-offers-dashboard></app-offers-dashboard>
+  }
+}
+
+<router-outlet />
