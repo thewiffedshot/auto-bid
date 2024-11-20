@@ -1,0 +1,17 @@
+<div class="card mb-3" style="max-width: 540px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <app-carousel class="d-flex w-100 h-100" [images]="offer.images"></app-carousel>
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title unselectable">{{offer.make + ' ' + offer.model}}</h5>
+        <h6 class="card-title unselectable"><i>Price: {{offer.price}}</i></h6>
+        <p class="card-text unselectable">{{offer.description}}</p>
+        <p class="card-text unselectable"><small class="text-muted"><b>Transmission:</b> {{offer.isAutomatic ? 'Auto' : 'Manual'}}</small></p>
+        <p class="card-text unselectable"><small class="text-muted"><b>Odometer:</b> {{offer.odometer + (offer.odometerInMiles ? ' miles' : ' km')}}</small></p>
+        <p class="card-text unselectable"><small class="text-muted"><b>Year:</b> {{offer.year}}</small></p>
+      </div>
+    </div>
+  </div>
+</div>

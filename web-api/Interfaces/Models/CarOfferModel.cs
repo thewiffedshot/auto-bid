@@ -7,6 +7,8 @@ namespace WebApi.Interfaces.Models
     [ExportTsClass]
     public class CarOfferModel
     {
+        public Guid? Id { get; set; }
+
         [Required]
         public string? Make { get; set; }
 

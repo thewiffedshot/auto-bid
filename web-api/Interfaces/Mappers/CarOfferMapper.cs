@@ -20,14 +20,14 @@ namespace WebApi.Interfaces.Mappers
                 throw new ArgumentException("Invalid car make.");
             }
 
-            destination.Model = source.Model ?? throw new ArgumentException("Model is required.");
+            destination.Model = source.Model?.Trim() ?? throw new ArgumentException("Model is required.");
             destination.Year = source.Year ?? throw new ArgumentException("Year is required.");
             destination.Price = source.Price ?? throw new ArgumentException("Price is required.");
-            destination.Odometer = source.Odometer ?? throw new ArgumentException("Odometer is required.");
+            destination.Odometer = source.Odometer?.Trim() ?? throw new ArgumentException("Odometer is required.");
             destination.OdometerInMiles = source.OdometerInMiles ?? false;
             destination.IsAutomatic = source.IsAutomatic ?? false;
 
-           destination.Description = source.Description;
+           destination.Description = source.Description?.Trim();
         }
     }
 }

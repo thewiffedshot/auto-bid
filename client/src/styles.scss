@@ -2,3 +2,8 @@
 body {
     background-color: peachpuff;
 }
+
+.unselectable {
+  -webkit-user-select: none; /* Safari */
+  user-select: none;
+}

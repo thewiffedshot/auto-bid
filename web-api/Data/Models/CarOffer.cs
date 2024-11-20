@@ -32,6 +32,7 @@ namespace WebApi.Data.Models
         {
             return new CarOfferModel
             {
+                Id = Id,
                 Make = Make.ToString(),
                 Model = Model,
                 Year = Year,

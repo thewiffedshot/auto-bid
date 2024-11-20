@@ -1,0 +1,13 @@
+.card {
+    background-color: snow;
+    outline: 1px solid #ccc;
+}
+
+.card:hover:not(:has(app-carousel:hover)) {
+    background-color: #e0e0e0;
+    cursor: pointer;
+}
+
+.card:active:not(:has(app-carousel:active)) {
+    background-color: #d0d0d0;
+}

@@ -1,15 +1,16 @@
 import { CarImageModel } from "./car-image-model";
 import { UserModel } from "./user-model";
 
-export class CarOfferModel {
-    make!: string;
-    model!: string;
-    year!: number;
-    price!: number;
-    odometer!: string;
+export interface CarOfferModel {
+    id?: string;
+    make: string;
+    model: string;
+    year: number;
+    price: number;
+    odometer: string;
     odometerInMiles?: boolean;
     isAutomatic?: boolean;
-    images!: CarImageModel[];
+    images?: CarImageModel[];
     description?: string;
-    owner!: UserModel;
+    owner: UserModel;
 }
