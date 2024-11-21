@@ -88,4 +88,12 @@ public class CarOfferSet
             .SingleOrDefaultAsync(e => e.Id == id)
             .ContinueWith(e => e.Result?.ToModel()); 
     }
+
+    public async Task<IEnumerable<CarOfferModel>> GetAll()
+    {
+        return await _dbContext.CarOffers
+            .Include(e => e.Owner)
+            .Select(e => e.ToModel())
+            .ToListAsync();
+    }
 }

@@ -12,5 +12,5 @@ export interface CarOfferModel {
     isAutomatic?: boolean;
     images?: CarImageModel[];
     description?: string;
-    owner: UserModel;
+    ownerUsername: string;
 }

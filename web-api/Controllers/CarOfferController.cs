@@ -57,5 +57,13 @@ namespace AutoBid.WebApi.Controllers
 
             return Ok(carOffer);
         }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CarOfferModel>>> Get()
+        {
+            var carOffers = await _context.CarOffers.GetAll();
+
+            return Ok(carOffers);
+        }
     }
 }

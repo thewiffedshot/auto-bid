@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { mockCarOffer } from '../../mocks/car-offer.mocks';
 import { CarOfferModel } from '../models/car-offer-model';
 import { OfferListingComponent } from "../offer-listing/offer-listing.component";
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-offers-dashboard',
@@ -13,5 +13,11 @@ import { OfferListingComponent } from "../offer-listing/offer-listing.component"
   styleUrl: './offers-dashboard.component.scss'
 })
 export class OffersDashboardComponent {
-  @Input() offers: CarOfferModel[] = [mockCarOffer];
+  @Input() offers: CarOfferModel[] = [];
+
+  constructor(private readonly httpClient: HttpClient) {
+    this.httpClient.get<CarOfferModel[]>('/api/CarOffer').subscribe(offers => {
+      this.offers = offers;
+    });
+  }
 }
