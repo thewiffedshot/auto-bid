@@ -1,0 +1,59 @@
+<div class="card mx-5 my-3">
+    <div class="card-header">
+        <h3 class="card-title">Offer Details</h3>
+    </div>
+    <div class="card-body">
+        <div class="row mb-2">
+            <div class="col-6">
+                <label class="form-label">Make</label>
+                <select [(ngModel)]="offer.make" class="form-control" [disabled]="readonly">
+                    @for(make of objectKeys(CarOfferMake); track make) {
+                        <option value="{{make}}">{{make}}</option>
+                    }
+                </select>
+            </div>
+            <div class="col-6">
+                <label for="" class="form-label">Model</label>
+                <input type="text" class="form-control" [disabled]="readonly" [(ngModel)]="offer.model" placeholder="Model" />
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-6">
+                <label for="" class="form-label">Price</label>
+                <input type="number" class="form-control" [disabled]="readonly" [(ngModel)]="offer.price" placeholder="Price" />
+            </div>
+            <div class="col-6">
+                <label for="" class="form-label">Year</label>
+                <input type="number" [disabled]="readonly" class="form-control" [(ngModel)]="offer.year" placeholder="Year" />
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-6">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" [disabled]="readonly" [(ngModel)]="offer.isAutomatic" placeholder="Manual" />
+                    <label for="" class="form-check-label">Is Automatic?</label>
+                </div>
+            </div>
+            <div class="col-6">
+                <label for="" class="form-label">Odometer</label>
+                <input type="text" class="form-control" [disabled]="readonly" [(ngModel)]="offer.odometer" placeholder="Driven distance" />
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" [disabled]="readonly" [(ngModel)]="offer.odometerInMiles" placeholder="Is odometer in miles or km" />
+                    <label for="" class="form-check-label">Odometer in Miles?</label>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-12">
+                <label for="" class="form-label">Description</label>
+                <input type="text" class="form-control" [disabled]="readonly" [(ngModel)]="offer.description" placeholder="Description of car" />
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-12">
+                <label for="" class="form-label">Images</label>
+                <input type="file" [disabled]="readonly" id="carImages" name="carImages" class="form-control" multiple accept="image/png, image/jpeg" />
+            </div>
+        </div>
+    </div>
+</div>

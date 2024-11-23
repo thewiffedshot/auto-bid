@@ -21,16 +21,4 @@
   </div>
 </nav>
 
-@switch (activeNavElement) {
-  @case ('home') {
-    <app-home></app-home>
-  }
-  @case ('users') {
-    <app-users-dashboard></app-users-dashboard>
-  }
-  @case ('offers') {
-    <app-offers-dashboard></app-offers-dashboard>
-  }
-}
-
 <router-outlet />

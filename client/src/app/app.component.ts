@@ -1,19 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { OffersDashboardComponent } from './offers-dashboard/offers-dashboard.component';
-import { HomeComponent } from './home/home.component';
-import { UsersDashboardComponent } from './users-dashboard/users-dashboard.component';
+import { Router, RouterOutlet } from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, OffersDashboardComponent, HomeComponent, UsersDashboardComponent],
+  imports: [RouterOutlet, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'client';
+  title = 'AutoBid';
 
-  activeNavElement: 'home' | 'users' | 'offers' = 'home';
+  set activeNavElement(value: 'home' | 'users' | 'offers') {
+    this.router.navigate([value]);
+  };
+
+  constructor(private readonly router: Router) {
+    this.activeNavElement = 'home';
+  }
 }
