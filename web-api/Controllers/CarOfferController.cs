@@ -39,7 +39,7 @@ namespace AutoBid.WebApi.Controllers
 
             await _context.CarOffers.Update(id, carOffer, carOffer.CarImagesToAdd, carOffer.CarImagesToDelete);
 
-            return Ok("Car offer updated.");
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -47,7 +47,7 @@ namespace AutoBid.WebApi.Controllers
         {
             await _context.CarOffers.Delete(id);
 
-            return Ok("Car offer deleted.");
+            return Ok();
         }
 
         [HttpGet("{id}")]

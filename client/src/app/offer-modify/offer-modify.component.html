@@ -1,1 +1,7 @@
-<p>offer-modify works!</p>
+<app-offer-details [offer]="offer"></app-offer-details>
+<div class="card mx-5 mt-2 d-flex justify-content-end">
+    <div class="p-2 d-inline-flex ms-auto">
+        <button class="btn btn-primary d-block-inline" (click)="onSaveClick()">Save</button>
+        <button class="btn btn-danger ms-2" (click)="onCancelClick()">Cancel</button>
+    </div>
+</div>

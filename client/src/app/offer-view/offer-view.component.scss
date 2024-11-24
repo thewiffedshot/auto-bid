@@ -1,0 +1,19 @@
+.btn-primary {
+    min-width: 120px;
+    background-color: skyblue;
+    border: none;
+
+    &:hover {
+        background-color: deepskyblue;
+    }
+}
+
+.btn-danger {
+    min-width: 120px;
+    background-color: lightcoral;
+    border: none;
+
+    &:hover {
+        background-color: tomato;
+    }
+}

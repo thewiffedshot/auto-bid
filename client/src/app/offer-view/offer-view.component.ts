@@ -43,4 +43,12 @@ export class OfferViewComponent implements OnInit, OnDestroy {
       });
     }
   }
+
+  onEditClick(): void {
+    this.router.navigate(['/offer/modify', this.offer?.id], { state: { openedOffer: this.offer } });
+  }
+
+  onCancelClick(): void {
+    this.router.navigate(['/dashboard']);
+  }
 }
