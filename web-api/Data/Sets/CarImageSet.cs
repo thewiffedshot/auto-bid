@@ -45,6 +45,7 @@ public class CarImageSet {
 
         return carImages.Select(ci => new CarImageModel
         {
+            Id = ci.Id,
             Base64ImageData = Convert.ToBase64String(
                 File.ReadAllBytes(
                     Path.Combine(_configuration["ImageStorage:Path"] ?? "images", $"carOffers/{ci.Id}")
@@ -67,6 +68,7 @@ public class CarImageSet {
 
         return new CarImageModel
         {
+            Id = carImage.Id,
             Base64ImageData = Convert.ToBase64String(imageBytes)
         };
     }

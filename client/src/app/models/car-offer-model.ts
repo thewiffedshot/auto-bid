@@ -12,6 +12,8 @@ export interface CarOfferModel {
     images?: CarImageModel[];
     description?: string;
     ownerUsername: string;
+    carImagesToAdd?: CarImageModel[];
+    carImagesToDelete?: string[];
 }
 
 export enum CarOfferMake {

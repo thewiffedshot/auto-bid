@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { OfferDetailsComponent } from "../offer-details/offer-details.component";
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { forkJoin, map, mergeMap, Subscription } from 'rxjs';
 import { CarOfferModel } from '../models/car-offer-model';
 import { HttpClient } from '@angular/common/http';
+import { CarImageModel } from '../models/car-image-model';
 
 @Component({
   selector: 'app-offer-view',
@@ -21,15 +22,15 @@ export class OfferViewComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly httpClient: HttpClient,
     private readonly route: ActivatedRoute
-  ) {}
+  ) {
+    this.offer = this.router.getCurrentNavigation()?.extras.state?.['openedOffer'];
+  }
   
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
   }
 
   ngOnInit(): void {
-    this.offer = this.router.getCurrentNavigation()?.extras.state?.['openedOffer'];
-
     if (!this.offer) {
       this.subscription = this.route.params.subscribe(params => {
         if (!params['id']) {
@@ -37,7 +38,16 @@ export class OfferViewComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this.httpClient.get<CarOfferModel>(`/api/CarOffer/${params['id']}`).subscribe(offer => {
+        this.httpClient.get<CarOfferModel>(`/api/CarOffer/${params['id']}`).pipe(
+          map(offer => {
+            const imageRequest = this.httpClient.get<CarImageModel[]>(`/api/CarImage/ForOffer/${offer.id}`).pipe(
+              map(images => ({ ...offer, images }))
+            );
+
+            return imageRequest;
+          }),
+          mergeMap(request => request)
+        ).subscribe(offer => {
           this.offer = offer;
         });
       });

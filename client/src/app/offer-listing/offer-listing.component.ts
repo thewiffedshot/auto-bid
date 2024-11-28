@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Input } from '@angular/core';
 import { CarOfferModel } from '../models/car-offer-model';
 import { CarouselComponent } from "../carousel/carousel.component";
 import { HttpClient } from '@angular/common/http';
-import { CarImageModel } from '../models/car-image-model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-offer-listing',
@@ -14,13 +14,15 @@ import { CarImageModel } from '../models/car-image-model';
 export class OfferListingComponent implements AfterViewInit {
   @Input() offer!: CarOfferModel;
   
-  constructor(private readonly httpClient: HttpClient) { }
+  constructor(
+    private readonly router: Router
+  ) { }
 
   ngAfterViewInit(): void {
-    if (this.offer.id) {
-      this.httpClient.get<CarImageModel[]>(`/api/CarImage/ForOffer/${this.offer.id}`).subscribe(images => {
-        this.offer.images = images;
-      });    
-    }
+    
+  }
+
+  openOffer(): void {
+    this.router.navigate(['/offer', this.offer.id], { state: { openedOffer: this.offer } });
   }
 }
