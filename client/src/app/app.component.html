@@ -17,6 +17,14 @@
       (click)="activeNavElement = 'offers'">
         <div class="nav-link d-flex align-items-center">Offers</div>
       </li>
+      <li class="nav-item" [ngClass]="activeNavElement === 'createOffer' ? 'active' : ''"
+      (click)="activeNavElement = 'createOffer'">
+        <div class="nav-link d-flex align-items-center text-success">Create Offer</div>
+      </li>
+      <li class="nav-item" [ngClass]="activeNavElement === 'createUser' ? 'active' : ''"
+      (click)="activeNavElement = 'createUser'">
+        <div class="nav-link d-flex align-items-center text-success">Create User</div>
+      </li>
     </ul>
   </div>
 </nav>

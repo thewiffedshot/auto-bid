@@ -1,1 +1,5 @@
-<p>users-dashboard works!</p>
+<div class="d-flex justify-content-center flex-wrap gap-3 pt-5">
+    @for(user of users; track user.id) {
+        <app-user-listing [user]="user"></app-user-listing>
+    }
+</div>

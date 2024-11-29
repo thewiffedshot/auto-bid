@@ -13,8 +13,28 @@ import { Router, RouterOutlet } from '@angular/router';
 export class AppComponent {
   title = 'AutoBid';
 
-  set activeNavElement(value: 'home' | 'users' | 'offers') {
-    this.router.navigate([value]);
+  set activeNavElement(value: 'home' | 'users' | 'offers' | 'createOffer' | 'createUser') {
+    let targetRoute = '';
+
+    switch (value) {
+      case 'home':
+        targetRoute = '/dashboard';
+        break;
+      case 'users':
+        targetRoute = '/users';
+        break;
+      case 'offers':
+        targetRoute = '/offers';
+        break;
+      case 'createOffer':
+        targetRoute = '/offer/create';
+        break;
+      case 'createUser':
+        targetRoute = '/user/create';
+        break;
+    }
+
+    this.router.navigate([targetRoute]);
   };
 
   constructor(private readonly router: Router) {

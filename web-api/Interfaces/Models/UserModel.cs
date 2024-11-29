@@ -7,6 +7,8 @@ namespace WebApi.Interfaces.Models
     [ExportTsClass]
     public class UserModel : IEntityModel<User>
     {
+        public Guid? Id { get; set; }
+        
         [Required]
         [MaxLength(100)]
         public required string FirstName { get; set; }

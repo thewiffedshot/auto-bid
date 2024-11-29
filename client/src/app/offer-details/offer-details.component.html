@@ -2,51 +2,59 @@
     <div class="card-header">
         <h3 class="card-title">Offer Details</h3>
     </div>
+    @if(offer) {
     <div class="card-body">
         <div class="row mb-2">
             <div class="col-6">
                 <label class="form-label">Make</label>
                 <select [(ngModel)]="offer.make" class="form-control" [disabled]="readonly">
                     @for(make of objectKeys(CarOfferMake); track make) {
-                        <option value="{{make}}">{{make}}</option>
+                    <option value="{{ make }}">{{ make }}</option>
                     }
                 </select>
             </div>
             <div class="col-6">
                 <label for="" class="form-label">Model</label>
-                <input type="text" class="form-control" [disabled]="readonly" [(ngModel)]="offer.model" placeholder="Model" />
+                <input type="text" class="form-control" [disabled]="readonly" [(ngModel)]="offer.model"
+                    placeholder="Model" />
             </div>
         </div>
         <div class="row mb-2">
             <div class="col-6">
                 <label for="" class="form-label">Price</label>
-                <input type="number" class="form-control" [disabled]="readonly" [(ngModel)]="offer.price" placeholder="Price" />
+                <input type="number" class="form-control" [disabled]="readonly" [(ngModel)]="offer.price"
+                    placeholder="Price" />
             </div>
             <div class="col-6">
                 <label for="" class="form-label">Year</label>
-                <input type="number" [disabled]="readonly" class="form-control" [(ngModel)]="offer.year" placeholder="Year" />
+                <input type="number" [disabled]="readonly" class="form-control" [(ngModel)]="offer.year"
+                    placeholder="Year" />
             </div>
         </div>
         <div class="row mb-2">
             <div class="col-6">
                 <div class="form-check">
                     <label for="isAuto" class="form-check-label lh-large">Is Automatic?</label>
-                    <input id="isAuto" type="checkbox" class="form-check-input" [disabled]="readonly" [(ngModel)]="offer.isAutomatic" placeholder="Manual" />
+                    <input id="isAuto" type="checkbox" class="form-check-input" [disabled]="readonly"
+                        [(ngModel)]="offer.isAutomatic" placeholder="Manual" />
                 </div>
             </div>
             <div class="col-6">
                 <label for="" class="form-label">Odometer</label>
-                <input type="text" class="form-control" [disabled]="readonly" [(ngModel)]="offer.odometer" placeholder="Driven distance" />
+                <input type="text" class="form-control" [disabled]="readonly" [(ngModel)]="offer.odometer"
+                    placeholder="Driven distance" />
                 <div class="form-check mt-2">
                     <label for="odoInMiles" class="form-check-label lh-large">Odometer in Miles?</label>
-                    <input id="odoInMiles" type="checkbox" class="form-check-input" [disabled]="readonly" [(ngModel)]="offer.odometerInMiles" placeholder="Is odometer in miles or km" />
+                    <input id="odoInMiles" type="checkbox" class="form-check-input" [disabled]="readonly"
+                        [(ngModel)]="offer.odometerInMiles" placeholder="Is odometer in miles or km" />
                 </div>
             </div>
         </div>
         <div class="row mb-2">
             <div class="col-12">
                 <label for="" class="form-label">Description</label>
-                <input type="text" class="form-control" [disabled]="readonly" [(ngModel)]="offer.description" placeholder="Description of car" />
+                <input type="text" class="form-control" [disabled]="readonly" [(ngModel)]="offer.description"
+                    placeholder="Description of car" />
             </div>
         </div>
         <div class="row mb-2">
@@ -56,4 +64,5 @@
             </div>
         </div>
     </div>
+    }
 </div>

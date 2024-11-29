@@ -1,4 +1,5 @@
 using AutoBid.WebApi.Data;
+using Microsoft.EntityFrameworkCore;
 using WebApi.Interfaces.Models;
 
 public class UserSet {
@@ -24,8 +25,10 @@ public class UserSet {
         throw new NotImplementedException();
     }
 
-    public UserModel Get(Guid id)
+    public async Task<IEnumerable<UserModel>> GetAll()
     {
-        throw new NotImplementedException();
+        return await _context.Users
+            .Select(e => e.ToModel())
+            .ToListAsync();
     }
 }

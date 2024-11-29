@@ -21,7 +21,6 @@ export class OfferModifyComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly router: Router,
-    private readonly route: ActivatedRoute,
     private readonly httpClient: HttpClient
   ) {
     this.offer = this.router.getCurrentNavigation()?.extras.state?.['openedOffer'];    

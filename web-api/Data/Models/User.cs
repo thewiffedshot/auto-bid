@@ -30,6 +30,7 @@ namespace WebApi.Data.Models
         {
             return new UserModel
             {
+                Id = Id,
                 FirstName = FirstName,
                 LastName = LastName,
                 Email = Email,

@@ -11,13 +11,15 @@ namespace WebApi.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly AutoBidDbContext _context;
+        private readonly AutoBidDbContext _dbContext;
+        private readonly AutoBidContext _context;
         private readonly IMapper<UserModel, User> _userMapper;
 
-        public UserController(AutoBidDbContext context, IMapper<UserModel, User> userMapper)
+        public UserController(AutoBidDbContext dbContext, AutoBidContext context, IMapper<UserModel, User> userMapper)
         {
-            _context = context;
+            _dbContext = dbContext;
             _userMapper = userMapper;
+            _context = context;
         }
 
         [HttpPost]
@@ -33,7 +35,7 @@ namespace WebApi.Controllers
                 return BadRequest("User is required.");
             }
 
-            var existingUser = await _context.Users.AnyAsync(
+            var existingUser = await _dbContext.Users.AnyAsync(
                 e => e.Username == user.Username || 
                 e.Email == user.Email
             );
@@ -44,9 +46,9 @@ namespace WebApi.Controllers
             }
 
             var userEntity = _userMapper.Map(user);
-            _context.Users.Add(userEntity);
+            _dbContext.Users.Add(userEntity);
 
-            await _context.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
             return Created("User created.", userEntity.Id);
         }
@@ -64,7 +66,7 @@ namespace WebApi.Controllers
                 return BadRequest("User is required.");
             }
 
-            var existingUser = await _context.Users.FindAsync(id);
+            var existingUser = await _dbContext.Users.FindAsync(id);
 
             if (existingUser == null)
             {
@@ -72,7 +74,7 @@ namespace WebApi.Controllers
             }
 
             _userMapper.Map(user, existingUser);
-            await _context.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
             return Ok("User updated.");
         }
@@ -80,23 +82,23 @@ namespace WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _dbContext.Users.FindAsync(id);
 
             if (user == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
+            _dbContext.Users.Remove(user);
+            await _dbContext.SaveChangesAsync();
 
-            return Ok("User deleted.");
+            return Ok();
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(int id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _dbContext.Users.FindAsync(id);
 
             if (user == null)
             {
@@ -114,7 +116,7 @@ namespace WebApi.Controllers
                 return BadRequest("User is required.");
             }
 
-            var existingUser = await _context.Users.AnyAsync(
+            var existingUser = await _dbContext.Users.AnyAsync(
                 e => e.Username == user.Username || 
                 e.Email == user.Email
             );
@@ -125,6 +127,14 @@ namespace WebApi.Controllers
             }
 
             return Ok("User exists.");
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<UserModel>>> Get()
+        {
+            var users = await _context.Users.GetAll();
+
+            return Ok(users);
         }
     }
 }

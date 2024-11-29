@@ -1,0 +1,33 @@
+<div class="card mx-5 my-3">
+    <div class="card-header">
+        <h3 class="card-title">User Details</h3>
+    </div>
+    @if(user) {
+    <div class="card-body">
+        <div class="row mb-2">
+            <div class="col-6">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" class="form-control" [disabled]="readonly" [(ngModel)]="user.firstName"
+                    placeholder="First Name" id="firstName" />
+            </div>
+            <div class="col-6">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" class="form-control" [disabled]="readonly" [(ngModel)]="user.lastName"
+                    placeholder="Last Name" id="lastName" />
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-6">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" class="form-control" [disabled]="readonly" [(ngModel)]="user.email"
+                    placeholder="Email" id="email" /> 
+            </div>
+            <div class="col-6">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" [disabled]="readonly" [(ngModel)]="user.username"
+                    placeholder="Username" id="username" />
+            </div>
+        </div>
+    </div>
+    }
+</div>

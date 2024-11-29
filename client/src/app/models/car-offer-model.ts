@@ -1,20 +1,36 @@
 import { CarImageModel } from "./car-image-model";
 
 export interface CarOfferModel {
-    id?: string;
-    make: CarOfferMake;
-    model: string;
-    year: number;
-    price: number;
-    odometer: string;
+    id?: string | null;
+    make: CarOfferMake | null;
+    model: string | null;
+    year: number | null;
+    price: number | null;
+    odometer: string | null;
     odometerInMiles?: boolean;
     isAutomatic?: boolean;
     images?: CarImageModel[];
     description?: string;
-    ownerUsername: string;
+    ownerUsername: string | null;
     carImagesToAdd?: CarImageModel[];
     carImagesToDelete?: string[];
 }
+
+export const initialCarOfferModel: CarOfferModel = {
+    id: null,
+    make: null,
+    model: null,
+    year: null,
+    price: null,
+    odometer: null,
+    odometerInMiles: false,
+    isAutomatic: false,
+    images: [],
+    description: '',
+    ownerUsername: null,
+    carImagesToAdd: [],
+    carImagesToDelete: [],
+};
 
 export enum CarOfferMake {
     Ford = 'Ford',
