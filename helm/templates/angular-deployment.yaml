@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: angular-cli
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: angular-cli
+  template:
+    metadata:
+      labels:
+        app: angular-cli
+    spec:
+      containers:
+      - name: angular-cli
+        image: "{{ .Values.angular.image }}"
+        ports:
+        - containerPort: 4200

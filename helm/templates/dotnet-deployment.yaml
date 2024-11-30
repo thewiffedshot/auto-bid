@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dotnet-sdk
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dotnet-sdk
+  template:
+    metadata:
+      labels:
+        app: dotnet-sdk
+    spec:
+      containers:
+      - name: dotnet-sdk
+        image: "{{ .Values.dotnet.image }}"
+        ports:
+        - containerPort: 5000

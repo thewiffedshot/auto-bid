@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: angular-service
+spec:
+  type: {{ .Values.angular.service.type }}
+  ports:
+  - port: {{ .Values.angular.service.port }}
+    targetPort: 4200
+  selector:
+    app: angular-cli
