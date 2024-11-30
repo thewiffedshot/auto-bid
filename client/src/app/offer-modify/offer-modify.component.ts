@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { OfferDetailsComponent } from "../offer-details/offer-details.component";
-import { ActivatedRoute, Router } from '@angular/router';
-import { CarOfferModel } from '../models/car-offer-model';
+import { Router } from '@angular/router';
+import { CarOfferModel, initialCarOfferModel } from '../models/car-offer-model';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 
@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './offer-modify.component.html',
   styleUrl: './offer-modify.component.scss'
 })
-export class OfferModifyComponent implements OnInit, OnDestroy {
+export class OfferModifyComponent implements OnDestroy {
   offer: CarOfferModel;
   
   @ViewChild(OfferDetailsComponent) offerDetailsComponent!: OfferDetailsComponent;
@@ -30,10 +30,6 @@ export class OfferModifyComponent implements OnInit, OnDestroy {
     this.subscription?.unsubscribe();
   }
 
-  ngOnInit(): void {
-    
-  }
-
   onCancelClick(): void {
     this.router.navigate(['/offer', this.offer.id]);
   }
@@ -43,7 +39,13 @@ export class OfferModifyComponent implements OnInit, OnDestroy {
     this.offer.carImagesToDelete = this.offerDetailsComponent.imagesToRemove?.map(image => image.id!);
 
     this.httpClient.put(`/api/CarOffer/${this.offer.id}`, { ...this.offer, images: undefined }).subscribe(() => {
-      this.router.navigate(['/offer', this.offer.id]);
+      this.router.navigate(['/offer', this.offer.id], { state: { openedOffer: initialCarOfferModel } });
+    });
+  }
+
+  onDeleteClick(): void {
+    this.httpClient.delete(`/api/CarOffer/${this.offer.id}`).subscribe(() => {
+      this.router.navigate(['/dashboard'], { state: { openedOffer: initialCarOfferModel } });
     });
   }
 }

@@ -46,7 +46,7 @@ export class OfferCreateComponent {
     this.offer.carImagesToAdd = this.offerDetailsComponent.imagesToAdd;
 
     this.httpClient.post<string>(`/api/CarOffer`, { ...this.offer, ownerUsername: 'resonate', images: undefined }).subscribe(offerId => {
-      this.router.navigate(['/offer', offerId]);
+      this.router.navigate(['/offer', offerId], { state: { openedOffer: initialCarOfferModel } });
     });
   }
 }
