@@ -9,10 +9,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace web_api.Migrations
+namespace AutoBid.WebApi.Migrations
 {
     [DbContext(typeof(AutoBidDbContext))]
-    [Migration("20241117183932_InitialCreate")]
+    [Migration("20241206125821_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

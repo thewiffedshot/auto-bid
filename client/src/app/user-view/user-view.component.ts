@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { UserDetailsComponent } from '../user-details/user-details.component';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-user-view',
@@ -37,7 +38,7 @@ export class UserViewComponent implements OnDestroy, OnInit {
           return;
         }
 
-        this.httpClient.get<UserModel>(`/api/User/${params['id']}`).subscribe(user => {
+        this.httpClient.get<UserModel>(`${environment.apiUrl}/api/User/${params['id']}`).subscribe(user => {
           this.user = user;
         });
       });
@@ -45,12 +46,12 @@ export class UserViewComponent implements OnDestroy, OnInit {
   }
 
   onDeleteClick(): void {
-    this.httpClient.delete(`/api/User/${this.user?.id}`).subscribe(() => {
-      this.router.navigate(['/dashboard']);
+    this.httpClient.delete(`${environment.apiUrl}/api/User/${this.user?.id}`).subscribe(() => {
+      this.router.navigate(['/users']);
     });
   }
 
   onCancelClick(): void {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/users']);
   }
 }

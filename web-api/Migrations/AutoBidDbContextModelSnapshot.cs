@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace web_api.Migrations
+namespace AutoBid.WebApi.Migrations
 {
     [DbContext(typeof(AutoBidDbContext))]
     partial class AutoBidDbContextModelSnapshot : ModelSnapshot

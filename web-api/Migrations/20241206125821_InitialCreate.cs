@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace web_api.Migrations
+namespace AutoBid.WebApi.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

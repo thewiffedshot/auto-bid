@@ -1,19 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dotnet-sdk
+  name: autobid-api-aspnetcore
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dotnet-sdk
+      app: autobid-api
   template:
     metadata:
       labels:
-        app: dotnet-sdk
+        app: autobid-api
     spec:
       containers:
-      - name: dotnet-sdk
-        image: "{{ .Values.dotnet.image }}"
-        ports:
-        - containerPort: 5000
+        - name: autobid-api-aspnetcore
+          image: {{ .Values.dotnet.image }}
+          env:
+          - name: ConnectionStrings__DefaultConnection
+            value: {{ .Values.dotnet.env.ConnectionStrings__DefaultConnection }}
+          imagePullPolicy: Always
+          ports:
+          - name: http
+            containerPort: {{ .Values.dotnet.service.port }}

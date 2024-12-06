@@ -5,6 +5,7 @@ import { forkJoin, map, mergeMap, Subscription } from 'rxjs';
 import { CarOfferModel } from '../models/car-offer-model';
 import { HttpClient } from '@angular/common/http';
 import { CarImageModel } from '../models/car-image-model';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-offer-view',
@@ -38,9 +39,9 @@ export class OfferViewComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this.httpClient.get<CarOfferModel>(`/api/CarOffer/${params['id']}`).pipe(
+        this.httpClient.get<CarOfferModel>(`${environment.apiUrl}/api/CarOffer/${params['id']}`).pipe(
           map(offer => {
-            const imageRequest = this.httpClient.get<CarImageModel[]>(`/api/CarImage/ForOffer/${offer.id}`).pipe(
+            const imageRequest = this.httpClient.get<CarImageModel[]>(`${environment.apiUrl}/api/CarImage/ForOffer/${offer.id}`).pipe(
               map(images => ({ ...offer, images }))
             );
 
@@ -55,7 +56,9 @@ export class OfferViewComponent implements OnInit, OnDestroy {
   }
 
   onEditClick(): void {
-    this.router.navigate(['/offer/modify', this.offer?.id], { state: { openedOffer: this.offer } });
+    this.route.params.subscribe(params => {
+      this.router.navigate(['/offer/modify', params['id']], { state: { openedOffer: this.offer } });
+    });
   }
 
   onCancelClick(): void {

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CarOfferModel, initialCarOfferModel } from '../models/car-offer-model';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-offer-modify',
@@ -38,13 +39,13 @@ export class OfferModifyComponent implements OnDestroy {
     this.offer.carImagesToAdd = this.offerDetailsComponent.imagesToAdd;
     this.offer.carImagesToDelete = this.offerDetailsComponent.imagesToRemove?.map(image => image.id!);
 
-    this.httpClient.put(`/api/CarOffer/${this.offer.id}`, { ...this.offer, images: undefined }).subscribe(() => {
-      this.router.navigate(['/offer', this.offer.id], { state: { openedOffer: initialCarOfferModel } });
+    this.httpClient.put(`${environment.apiUrl}/api/CarOffer/${this.offer.id}`, { ...this.offer, images: undefined }).subscribe(() => {
+      this.router.navigate(['/offer', this.offer.id]);
     });
   }
 
   onDeleteClick(): void {
-    this.httpClient.delete(`/api/CarOffer/${this.offer.id}`).subscribe(() => {
+    this.httpClient.delete(`${environment.apiUrl}/api/CarOffer/${this.offer.id}`).subscribe(() => {
       this.router.navigate(['/dashboard'], { state: { openedOffer: initialCarOfferModel } });
     });
   }

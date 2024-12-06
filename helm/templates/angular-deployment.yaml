@@ -1,19 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: angular-cli
+  name: autobid-ui-angular
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: angular-cli
+      app: autobid-ui
   template:
     metadata:
       labels:
-        app: angular-cli
+        app: autobid-ui
     spec:
       containers:
-      - name: angular-cli
-        image: "{{ .Values.angular.image }}"
+      - name: autobid-ui-angular
+        image: {{ .Values.angular.image }}
+        imagePullPolicy: Always
         ports:
-        - containerPort: 4200
+        - name: http
+          containerPort: {{ .Values.angular.service.port }}

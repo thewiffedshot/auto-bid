@@ -4,6 +4,7 @@ import { OfferDetailsComponent } from '../offer-details/offer-details.component'
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-offer-create',
@@ -45,7 +46,7 @@ export class OfferCreateComponent {
   onSaveClick(): void {
     this.offer.carImagesToAdd = this.offerDetailsComponent.imagesToAdd;
 
-    this.httpClient.post<string>(`/api/CarOffer`, { ...this.offer, ownerUsername: 'resonate', images: undefined }).subscribe(offerId => {
+    this.httpClient.post<string>(`${environment.apiUrl}/api/CarOffer`, { ...this.offer, ownerUsername: 'resonate', images: undefined }).subscribe(offerId => {
       this.router.navigate(['/offer', offerId], { state: { openedOffer: initialCarOfferModel } });
     });
   }

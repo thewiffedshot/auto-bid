@@ -5,6 +5,7 @@ import { map } from 'rxjs';
 import { UserListingComponent } from '../user-listing/user-listing.component';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-users-dashboard',
@@ -19,7 +20,7 @@ export class UsersDashboardComponent {
   constructor(
     private readonly httpClient: HttpClient, 
   ) {
-    this.httpClient.get<UserModel[]>('/api/User').subscribe(users => {
+    this.httpClient.get<UserModel[]>(`${environment.apiUrl}/api/User`).subscribe(users => {
       this.users = users;
     });
   }

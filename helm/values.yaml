@@ -1,17 +1,26 @@
 angular:
-  image: node:18.1
+  image: docker.io/resoneight/autobid-ui:latest
   service:
     type: ClusterIP
-    port: 4200
+    port: 80
 
 dotnet:
-  image: mcr.microsoft.com/dotnet/sdk:8.0
+  image: docker.io/resoneight/autobid-api:latest
   service:
     type: ClusterIP
-    port: 5013
+    port: 8080
+  env:
+    ASPNETCORE_ENVIRONMENT: "Development"
+    ConnectionStrings__DefaultConnection: "Host=postgres-service;Port=5432;Database=AutoBidDb;Username=postgres;Password=dummy;Trust Server Certificate=true"
 
 postgres:
   image: postgres:latest
   service:
     type: ClusterIP
     port: 5432
+  env:
+    POSTGRES_USER: "dummy"
+    POSTGRES_PASSWORD: "dummy"
+    POSTGRES_DB: "dummy"
+    POSTGRES_HOST: "dummy"
+    POSTGRES_PORT: "dummy"

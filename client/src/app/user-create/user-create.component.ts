@@ -4,6 +4,7 @@ import { UserDetailsComponent } from '../user-details/user-details.component';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-user-create',
@@ -43,8 +44,8 @@ export class UserCreateComponent {
   }
 
   onSaveClick(): void {
-    this.httpClient.post<string>(`/api/User`, this.user).subscribe(_userId => {
-      this.router.navigate(['/user/', this.user.username]);
+    this.httpClient.post<string>(`${environment.apiUrl}/api/User`, this.user).subscribe(_userId => {
+      this.router.navigate(['/users']);
     });
   }
 }

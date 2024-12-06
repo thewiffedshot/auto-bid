@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { forkJoin, map, merge, mergeMap } from 'rxjs';
 import { CarImageModel } from '../models/car-image-model';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-offers-dashboard',
@@ -21,10 +22,10 @@ export class OffersDashboardComponent {
   constructor(
     private readonly httpClient: HttpClient, 
   ) {
-    this.httpClient.get<CarOfferModel[]>('/api/CarOffer').pipe(
+    this.httpClient.get<CarOfferModel[]>(`${environment.apiUrl}/api/CarOffer`).pipe(
       map(offers => {
         const imageRequests = offers.map(offer => 
-          this.httpClient.get<CarImageModel[]>(`/api/CarImage/ForOffer/${offer.id}`).pipe(
+          this.httpClient.get<CarImageModel[]>(`${environment.apiUrl}/api/CarImage/ForOffer/${offer.id}`).pipe(
             map(images => ({ ...offer, images }))
           )
         );

@@ -6,6 +6,6 @@ spec:
   type: {{ .Values.angular.service.type }}
   ports:
   - port: {{ .Values.angular.service.port }}
-    targetPort: 4200
+    targetPort: 80
   selector:
-    app: angular-cli
+    app: autobid-ui 
