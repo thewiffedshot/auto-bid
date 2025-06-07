@@ -27,6 +27,8 @@ namespace WebApi.Data.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         [Required]
         public User Owner { get; set; } = default!;
+        public Guid? CarAuctionId { get; set; }
+        public CarAuction? CarAuction { get; set; }
 
         public CarOfferModel ToModel()
         {

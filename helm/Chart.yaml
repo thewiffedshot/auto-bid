@@ -1,4 +1,4 @@
 apiVersion: v2
 name: autobid-app
-description: A Helm chart for Kubernetes with Angular CLI, .NET SDK, and PostgreSQL
+description: A Helm chart for Kubernetes with an Angular front-end, ASP.NET Core back-end, and PostgreSQL persistance deployment
 version: 0.1.0

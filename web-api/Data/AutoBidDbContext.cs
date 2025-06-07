@@ -8,6 +8,7 @@ namespace AutoBid.WebApi.Data
         public DbSet<CarOffer> CarOffers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<CarImage> CarImages { get; set; }
+        public DbSet<CarAuction> CarAuctions { get; set; }
         
         public AutoBidDbContext(DbContextOptions<AutoBidDbContext> options)
             : base(options)
@@ -16,7 +17,7 @@ namespace AutoBid.WebApi.Data
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {    
+        {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder

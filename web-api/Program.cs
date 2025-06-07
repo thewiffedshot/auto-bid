@@ -32,6 +32,44 @@ builder.Services.AddTransient<AutoBidContext>();
 
 var app = builder.Build();
 
+app.UseWebSockets();
+
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path == "/ws")
+    {
+        // Handle WebSocket requests data here
+        if (context.WebSockets.IsWebSocketRequest)
+        {
+            using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+
+            while (true)
+            {
+                if (webSocket.State != System.Net.WebSockets.WebSocketState.Open)
+                {
+                    break; // Exit the loop if the WebSocket is not open
+                }
+                
+                var message = new ArraySegment<byte>(new byte[1024]);
+
+                webSocket.SendAsync(message, System.Net.WebSockets.WebSocketMessageType.Text, true, CancellationToken.None).Wait();
+
+                Thread.Sleep(1000); // Simulate some processing delay
+            }
+        }
+        else
+        {
+            context.Response.StatusCode = 400; // Bad Request
+            await context.Response.WriteAsync("WebSocket requests only.");
+        }
+    }
+    else
+    {
+        await next(context);
+    }
+
+});
+
 var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetRequiredService<AutoBidDbContext>();
 
@@ -77,4 +115,4 @@ if (app.Environment.IsDevelopment())
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();

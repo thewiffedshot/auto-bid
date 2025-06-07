@@ -1,5 +1,6 @@
 using AutoBid.WebApi.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using WebApi.Data.Models;
 using WebApi.Interfaces.Mappers;
 using WebApi.Interfaces.Models;
@@ -18,8 +19,23 @@ public class CarOfferSet
         _carOfferMapper = carOfferMapper;
     }
 
-    public async Task<Guid> Create(CarOfferModel carOffer, List<CarImageModel> carImages)
+    public async Task<Guid> Create(CarOfferModel carOffer, List<CarImageModel> carImages, decimal? auctionStartingPrice = null)
     {
+        if (carOffer == null)
+        {
+            throw new ArgumentNullException(nameof(carOffer), "Car offer cannot be null.");
+        }
+
+        if (carImages == null || carImages.Count == 0)
+        {
+            throw new ArgumentException("At least one image is required.", nameof(carImages));
+        }
+
+        if (auctionStartingPrice.HasValue && auctionStartingPrice <= 0)
+        {
+            throw new ArgumentException("Auction starting price must be greater than zero.", nameof(auctionStartingPrice));
+        }
+
         var user = await _dbContext.Users.SingleOrDefaultAsync(e => e.Username == carOffer.OwnerUsername);
 
         if (user == null)
@@ -27,15 +43,43 @@ public class CarOfferSet
             throw new Exception("Offer's owner not found.");
         }
 
-        var carOfferEntity = _carOfferMapper.Map(carOffer);
-        carOfferEntity.Owner = user;
-        _dbContext.CarOffers.Add(carOfferEntity);
+        using var transaction = await _dbContext.Database.BeginTransactionAsync();
 
-        await _dbContext.SaveChangesAsync();
+        try
+        {
+            var carOfferEntity = _carOfferMapper.Map(carOffer);
+            carOfferEntity.Owner = user;
 
-        var imageIds = await _context.CarImages.Create(carOfferEntity.Id!.Value, carImages);
-        
-        return carOfferEntity.Id!.Value;
+            _dbContext.CarOffers.Add(carOfferEntity);
+
+            await _dbContext.SaveChangesAsync();
+
+            var imageIds = await _context.CarImages.Create(carOfferEntity.Id!.Value, carImages);
+
+            await _dbContext.SaveChangesAsync();
+
+            var carAuction = new CarAuction
+            {
+                StartingPrice = auctionStartingPrice ?? 0,
+            };
+
+            _dbContext.CarAuctions.Add(carAuction);
+
+            await _dbContext.SaveChangesAsync();
+
+            carOfferEntity.CarAuctionId = carAuction.Id;
+
+            await _dbContext.SaveChangesAsync();
+
+            await transaction.CommitAsync();
+
+            return carOfferEntity.Id!.Value;
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
     }
 
     public async Task Update(Guid id, CarOfferModel carOffer, List<CarImageModel>? newImages, List<Guid>? imagesToDelete)
@@ -53,7 +97,8 @@ public class CarOfferSet
 
         await _dbContext.SaveChangesAsync();
 
-        if (newImages != null) {
+        if (newImages != null)
+        {
             await _context.CarImages.Create(id, newImages);
         }
 
@@ -86,7 +131,7 @@ public class CarOfferSet
         return await _dbContext.CarOffers
             .Include(e => e.Owner)
             .SingleOrDefaultAsync(e => e.Id == id)
-            .ContinueWith(e => e.Result?.ToModel()); 
+            .ContinueWith(e => e.Result?.ToModel());
     }
 
     public async Task<IEnumerable<CarOfferModel>> GetAll()
