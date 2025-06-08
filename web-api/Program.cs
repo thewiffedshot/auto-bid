@@ -1,4 +1,5 @@
 using AutoBid.WebApi.Data;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -34,40 +35,63 @@ var app = builder.Build();
 
 app.UseWebSockets();
 
-app.Use(async (context, next) =>
+// Guids are 16 bytes long and decimal too, so we can receive the dictionary values as a byte arrays
+var messageSize = 32; // 16 bytes for Guid + 16 bytes for decimal
+var clientBids = new Dictionary<Guid, decimal>();
+
+app.Map("/ws", async (context) =>
 {
-    if (context.Request.Path == "/ws")
+    // Handle WebSocket requests data here
+    if (context.WebSockets.IsWebSocketRequest)
     {
-        // Handle WebSocket requests data here
-        if (context.WebSockets.IsWebSocketRequest)
-        {
-            using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+        using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
 
-            while (true)
+        var buffer = new byte[1024 * 4];
+        var segment = new ArraySegment<byte>(buffer);
+
+        while (webSocket.State == System.Net.WebSockets.WebSocketState.Open)
+        {
+            var result = await webSocket.ReceiveAsync(segment, CancellationToken.None);
+
+            if (result.MessageType == System.Net.WebSockets.WebSocketMessageType.Close)
             {
-                if (webSocket.State != System.Net.WebSockets.WebSocketState.Open)
-                {
-                    break; // Exit the loop if the WebSocket is not open
-                }
-                
-                var message = new ArraySegment<byte>(new byte[1024]);
-
-                webSocket.SendAsync(message, System.Net.WebSockets.WebSocketMessageType.Text, true, CancellationToken.None).Wait();
-
-                Thread.Sleep(1000); // Simulate some processing delay
+                break; // Exit the loop if the WebSocket is not open
             }
-        }
-        else
-        {
-            context.Response.StatusCode = 400; // Bad Request
-            await context.Response.WriteAsync("WebSocket requests only.");
+
+            if (segment.Count < messageSize)
+            {
+                continue; // Skip if the received message is smaller than expected
+            }
+
+            var receivedString = System.Text.Encoding.UTF8.GetString(buffer, 0, result.Count);
+
+            var offerGuid = receivedString.Substring(1, 37); // Assuming the Guid is at the start of the string
+
+            // if (!Guid.TryParse(offerGuid, out var guid))
+            // {
+            //     Console.WriteLine("Invalid Guid received.");
+            //     continue; // Skip processing if the Guid is invalid
+            // }
+
+            // Assuming the decimal value is after the Guid in the string
+            var bid = receivedString.Substring(37); // Adjust based on your string format
+
+            // if (!decimal.TryParse(bid, out var decimalBid))
+            // {
+            //     Console.WriteLine("Invalid bid amount received.");
+            //     continue; // Skip processing if the bid is invalid
+            // }
+
+            Thread.Sleep(1000); // Simulate some processing delay
+
+            Console.WriteLine($"Received bid for offer: {offerGuid} - {bid}");
         }
     }
     else
     {
-        await next(context);
+        context.Response.StatusCode = 400; // Bad Request
+        await context.Response.WriteAsync("WebSocket requests only.");
     }
-
 });
 
 var scope = app.Services.CreateScope();
@@ -101,7 +125,7 @@ while (!databaseConfigured)
     {
         Console.WriteLine("Failed to connect to database. Retrying in 30 seconds.");
         Console.WriteLine(e.Message);
-        databaseConfigured = false;   
+        databaseConfigured = false;
         await Task.Delay(30000);
     }
 }
