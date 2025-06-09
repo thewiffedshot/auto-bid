@@ -1,31 +1,44 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-0">
   <a class="navbar-brand px-5" href="#">AutoBid</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+    aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse h-100" id="navbarNav">
-    <ul class="navbar-nav h-100">
-      <li class="nav-item" [ngClass]="activeNavElement === 'home' ? 'active' : ''"
-        (click)="activeNavElement = 'home'">
-        <div class="nav-link d-flex align-items-center">Home</div>
-      </li>
-      <li class="nav-item" [ngClass]="activeNavElement === 'users' ? 'active' : ''"
-        (click)="activeNavElement = 'users'">
-        <div class="nav-link d-flex align-items-center">Users</div>
-      </li>
-      <li class="nav-item" [ngClass]="activeNavElement === 'offers' ? 'active' : ''"
-      (click)="activeNavElement = 'offers'">
-        <div class="nav-link d-flex align-items-center">Offers</div>
-      </li>
-      <li class="nav-item" [ngClass]="activeNavElement === 'createOffer' ? 'active' : ''"
-      (click)="activeNavElement = 'createOffer'">
-        <div class="nav-link d-flex align-items-center text-success">Create Offer</div>
-      </li>
-      <li class="nav-item" [ngClass]="activeNavElement === 'createUser' ? 'active' : ''"
-      (click)="activeNavElement = 'createUser'">
-        <div class="nav-link d-flex align-items-center text-success">Create User</div>
-      </li>
-    </ul>
+  <div class="d-flex justify-space-between">
+    <div class="d-flex collapse navbar-collapse h-100" id="navbarNav">
+      <ul class="navbar-nav h-100">
+        <li class="nav-item" [ngClass]="activeNavElement === 'home' ? 'active' : ''"
+          (click)="activeNavElement = 'home'">
+          <div class="nav-link d-flex align-items-center">Home</div>
+        </li>
+        <li class="nav-item" [ngClass]="activeNavElement === 'users' ? 'active' : ''"
+          (click)="activeNavElement = 'users'">
+          <div class="nav-link d-flex align-items-center">Users</div>
+        </li>
+        <li class="nav-item" [ngClass]="activeNavElement === 'offers' ? 'active' : ''"
+          (click)="activeNavElement = 'offers'">
+          <div class="nav-link d-flex align-items-center">Offers</div>
+        </li>
+        <li class="nav-item" [ngClass]="activeNavElement === 'createOffer' ? 'active' : ''"
+          (click)="activeNavElement = 'createOffer'">
+          <div class="nav-link d-flex align-items-center text-success">Create Offer</div>
+        </li>
+        <li class="nav-item" [ngClass]="activeNavElement === 'createUser' ? 'active' : ''"
+          (click)="activeNavElement = 'createUser'">
+          <div class="nav-link d-flex align-items-center text-success">Create User</div>
+        </li>
+      </ul>
+      <div class="d-flex align-items-center" [ngClass]="activeNavElement === 'login' ? 'active' : ''">
+        @if (!loggedIn) {
+        <input #username type="text" class="form-control d-inline-block mx-2 my-2" placeholder="Username" />
+        <button class="nav-item nav-link d-flex align-items-center text-white h-100" (click)="login()">Login</button>
+        } @else {
+        <span class="d-flex align-items-center text-white">Logged in as: {{ loginService.getLoggedInUser() }}</span>
+        <button class="nav-item nav-link d-flex align-items-center text-white h-100" (click)="logout()">Logout</button>
+        }
+
+      </div>
+    </div>
   </div>
 </nav>
 

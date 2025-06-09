@@ -6,11 +6,16 @@ import { CarOfferModel } from '../models/car-offer-model';
 import { HttpClient } from '@angular/common/http';
 import { CarImageModel } from '../models/car-image-model';
 import { environment } from '../../environments/environment';
+import { ILoginService } from '../services/login.service.interface';
+import { LoginServiceMock } from '../services/login.service';
 
 @Component({
   selector: 'app-offer-view',
   standalone: true,
   imports: [OfferDetailsComponent],
+  providers: [
+    { provide: ILoginService, useClass: LoginServiceMock } 
+  ],
   templateUrl: './offer-view.component.html',
   styleUrl: './offer-view.component.scss'
 })
@@ -22,7 +27,8 @@ export class OfferViewComponent implements OnInit, OnDestroy {
   constructor(
     private readonly router: Router,
     private readonly httpClient: HttpClient,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly loginService: ILoginService 
   ) {
     this.offer = this.router.getCurrentNavigation()?.extras.state?.['openedOffer'];
   }
@@ -56,6 +62,11 @@ export class OfferViewComponent implements OnInit, OnDestroy {
   }
 
   onEditClick(): void {
+    if (this.loginService.getLoggedInUser() !== this.offer?.ownerUsername) {
+      this.router.navigate(['/dashboard']);
+      return;
+    }
+
     this.route.params.subscribe(params => {
       this.router.navigate(['/offer/modify', params['id']], { state: { openedOffer: this.offer } });
     });
