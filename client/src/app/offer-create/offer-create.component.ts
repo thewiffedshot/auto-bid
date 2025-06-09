@@ -5,11 +5,16 @@ import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { LoginServiceMock } from '../services/login.service';
+import { ILoginService } from '../services/login.service.interface';
 
 @Component({
   selector: 'app-offer-create',
   standalone: true,
   imports: [OfferDetailsComponent],
+  providers: [
+    { provide: ILoginService, useClass: LoginServiceMock }
+  ],
   templateUrl: './offer-create.component.html',
   styleUrl: './offer-create.component.scss'
 })
@@ -30,7 +35,8 @@ export class OfferCreateComponent {
 
   constructor(
     private readonly router: Router,
-    private readonly httpClient: HttpClient
+    private readonly httpClient: HttpClient,
+    private readonly loginService: ILoginService
   ) {
     this._offer = this.router.getCurrentNavigation()?.extras.state?.['openedOffer'];    
   }
@@ -46,7 +52,11 @@ export class OfferCreateComponent {
   onSaveClick(): void {
     this.offer.carImagesToAdd = this.offerDetailsComponent.imagesToAdd;
 
-    this.httpClient.post<string>(`${environment.apiUrl}/api/CarOffer`, { ...this.offer, ownerUsername: 'resonate', images: undefined }).subscribe(offerId => {
+    this.httpClient.post<string>(`${environment.apiUrl}/api/CarOffer`, { 
+      ...this.offer, 
+      ownerUsername: this.loginService.getLoggedInUser(), 
+      images: undefined })
+    .subscribe(offerId => {
       this.offer = initialCarOfferModel;
       this.router.navigate(['/offer', offerId], { state: { openedOffer: initialCarOfferModel } });
     });

@@ -17,13 +17,14 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ImageInputListComponent } from '../image-input-list/image-input-list.component';
 import { CarImageModel } from '../models/car-image-model';
-import { Subscription, timer } from 'rxjs';
-import { WebSocketService } from '../services/websocket.service';
+import { Subscription } from 'rxjs';
+import { WebSocketService } from '../services/web-socket.service';
 
 @Component({
   selector: 'app-offer-details',
   standalone: true,
   imports: [FormsModule, CommonModule, ImageInputListComponent],
+  providers: [WebSocketService],
   templateUrl: './offer-details.component.html',
   styleUrl: './offer-details.component.scss',
 })
