@@ -31,10 +31,10 @@
       <div class="d-flex align-items-center" [ngClass]="activeNavElement === 'login' ? 'active' : ''">
         @if (!loggedIn) {
         <input #username type="text" class="form-control d-inline-block mx-2 my-2" placeholder="Username" />
-        <button class="nav-item nav-link d-flex align-items-center text-white h-100" (click)="login()">Login</button>
+        <button class="nav-item nav-link d-flex align-items-center text-white ms-3 h-100" (click)="login()">Login</button>
         } @else {
         <span class="d-flex align-items-center text-white">Logged in as: {{ loginService.getLoggedInUser() }}</span>
-        <button class="nav-item nav-link d-flex align-items-center text-white h-100" (click)="logout()">Logout</button>
+        <button class="nav-item nav-link d-flex align-items-center text-white ms-3 h-100" (click)="logout()">Logout</button>
         }
 
       </div>

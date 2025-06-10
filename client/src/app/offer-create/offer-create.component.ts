@@ -5,16 +5,12 @@ import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { LoginServiceMock } from '../services/login.service';
 import { ILoginService } from '../services/login.service.interface';
 
 @Component({
   selector: 'app-offer-create',
   standalone: true,
   imports: [OfferDetailsComponent],
-  providers: [
-    { provide: ILoginService, useClass: LoginServiceMock }
-  ],
   templateUrl: './offer-create.component.html',
   styleUrl: './offer-create.component.scss'
 })

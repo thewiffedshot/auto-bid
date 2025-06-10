@@ -3,8 +3,8 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { LoginServiceMock } from './services/login.service';
 import { OnInit } from '@angular/core';
-import { LoginServiceMock } from './services/login.service';
-import { OnInit } from '@angular/core';
+import { ILoginService } from './services/login.service.interface';
+import { last } from 'rxjs';
 
 
 @Component({
@@ -12,10 +12,7 @@ import { OnInit } from '@angular/core';
   standalone: true,
   imports: [RouterOutlet, CommonModule],
   providers: [
-    { provide: 'ILoginService', useClass: LoginServiceMock } // Replace with actual implementation
-  ],
-  providers: [
-    { provide: 'ILoginService', useClass: LoginServiceMock } // Replace with actual implementation
+    { provide: ILoginService, useClass: LoginServiceMock } // Replace with actual implementation
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -46,9 +43,6 @@ export class AppComponent implements OnInit {
       case 'createUser':
         targetRoute = '/user/create';
         break;
-      case 'login':
-        targetRoute = '/dashboard';
-        break;
     }
 
     this.router.navigate([targetRoute]);
@@ -56,10 +50,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private readonly router: Router,
-    readonly loginService: LoginServiceMock) {
-  constructor(
-    private readonly router: Router,
-    readonly loginService: LoginServiceMock) {
+    readonly loginService: ILoginService) {
     this.activeNavElement = 'home';
   }
 
