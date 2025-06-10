@@ -3,12 +3,17 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { LoginServiceMock } from './services/login.service';
 import { OnInit } from '@angular/core';
+import { LoginServiceMock } from './services/login.service';
+import { OnInit } from '@angular/core';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, CommonModule],
+  providers: [
+    { provide: 'ILoginService', useClass: LoginServiceMock } // Replace with actual implementation
+  ],
   providers: [
     { provide: 'ILoginService', useClass: LoginServiceMock } // Replace with actual implementation
   ],
@@ -41,11 +46,17 @@ export class AppComponent implements OnInit {
       case 'createUser':
         targetRoute = '/user/create';
         break;
+      case 'login':
+        targetRoute = '/dashboard';
+        break;
     }
 
     this.router.navigate([targetRoute]);
   };
 
+  constructor(
+    private readonly router: Router,
+    readonly loginService: LoginServiceMock) {
   constructor(
     private readonly router: Router,
     readonly loginService: LoginServiceMock) {
